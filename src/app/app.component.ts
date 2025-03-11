@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders, HttpParams  } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+import { environment } from '../../src/environments/environment';
 declare const Swal: any;
 
 interface ApiResponse {
@@ -19,6 +21,7 @@ interface ApiResponse {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  private apiGlobalUrl = environment.apiGlobalUrl;
   usuarios: any[] = [];
   modalAbierto = false;
 
@@ -35,7 +38,7 @@ export class AppComponent implements OnInit {
   }
 
   obtenerUsuarios() {
-    this.http.get<any[]>('http://localhost:8080/listarUsuarios')
+    this.http.get<any[]>(`${this.apiGlobalUrl}/listarUsuarios`)
       .subscribe(
         (data) => {
           this.usuarios = data;
@@ -86,7 +89,7 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.http.post<ApiResponse>('http://localhost:8080/crearUsuarios', new HttpParams()
+    this.http.post<ApiResponse>(`${this.apiGlobalUrl}/crearUsuarios`, new HttpParams()
     .set('name', this.nuevoUsuario.name)
     .set('email', this.nuevoUsuario.email)
     .set('edad', this.nuevoUsuario.edad), {
